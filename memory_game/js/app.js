@@ -11,7 +11,7 @@ const icons = ['fa fa-diamond', 'fa fa-diamond',
     'fa fa-bomb', 'fa fa-bomb'
 ];
 
-const bestMoves = Math.ceil(icons.length * 2 / 3);
+const bestMoves = Math.ceil(icons.length * 3 / 4);
 const goodMoves = Math.ceil(bestMoves * 1.5);
 const poorMoves = Math.ceil(bestMoves * 2);
 
@@ -58,7 +58,7 @@ function init() {
  */
 function addClickListener(card) {
     card.addEventListener("click", function() {
-        if (firstCard != card) { //ignore same card click
+        if (!checkOpened(card)) { //ignore opened card click
             openCard(card);
             if (firstCard != null) {
                 checkSame(firstCard, card);
@@ -75,12 +75,13 @@ restartButton.addEventListener("click", restart);
  * Restart the game
  */
 function restart() {
+	clearInterval(timeTimer); //in care restart button was pressed during the game
     init();
     firstClick = true;
     matchedCards = [];
     moves = 0;
     totalSeconds = 0;
-    updateRating();
+    updateStars();
 }
 
 /**
@@ -104,13 +105,21 @@ function checkSame(card1, card2) {
         setMatched(card1);
         setMatched(card2);
         checkFinished();
-
     } else {
         setTimeout(function() {
             resetCard(card1);
             resetCard(card2);
         }, 500);
     }
+}
+
+/**
+ * Check the card is opened
+ * 
+ * @param card
+ */
+function checkOpened(card) {
+	return card.classList.contains("open");
 }
 
 /**
@@ -154,7 +163,7 @@ function resetCard(card) {
 function checkFinished() {
     if (matchedCards.length === icons.length) {
         clearInterval(timeTimer);
-        if (confirm("Congratulation! You won with " + moves + " moves in " + totalSeconds + " seconds! Play again?")) {
+        if (confirm("Congratulation! You have finished with " + numberOfStars() + " stars in " + totalSeconds + " seconds! Play again?")) {
             restart();
         }
     }
@@ -165,42 +174,47 @@ function checkFinished() {
  */
 function incMove() {
     moves++;
-    updateRating();
+    updateStars();
 }
 
 /**
- * Calculates number of stars to show depending on current number of moves.
+ * Updates number of stars
  */
-function updateRating() {
-    var rating = 0;
-    if (moves <= poorMoves) {
-        rating++;
-        if (moves <= goodMoves) {
-            rating++;
-            if (moves <= bestMoves) {
-                rating++;
-            }
-        }
-    }
-    setRating(rating);
+function updateStars() {
+    setStars(numberOfStars());
     movesContainer.innerHTML = moves;
+}
+
+/**
+ * Calculates number of stars
+ */
+function numberOfStars(){
+	var stars = 1;
+	if (moves <= poorMoves) {
+    	stars++;
+	    if (moves <= goodMoves) {
+	    	stars++;
+	        if (moves <= bestMoves) {
+	        	stars++;
+	        }
+	    }
+	}
+    return stars;
 }
 
 /**
  * Updates number of filled "stars"
  * 
- * @param rating
+ * @param numStars
  */
-function setRating(rating) {
+function setStars(numStars) {
     var stars = starsContainer.children;
     for (var i = 0; i < stars.length; i++) {
         var star = stars[i];
-        // console.log(star);
-        if (i < rating) {
+        if (i < numStars) {
             star.innerHTML = `<i class="fa fa-star"></i>`;
         } else {
             star.innerHTML = `<i class="fa fa-star-o"></i>`;
-            console.log("Removed one star")
         }
     }
 }

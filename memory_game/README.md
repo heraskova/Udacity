@@ -3,18 +3,32 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Dependencies](#dependencies)
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+Memory game field consist of 8 pairs of cards. Cards from the same pair have same icon.
 
-To get started, open `js/app.js` and start building out the app's functionality
+Icons on the cards initially hidden. The purpose of the game is to find all the pairs of cards in minimal number of moves. Comparison of 2 opened cards considered as one move. 
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+To get started, open `input.html` in web browser. 
+Game starts when you click on any card. The click makes card to show hidden icon.
+Once you open two cards they are compared. If icons are matched they stay opened and you can open new pair of closed cards, otherwise the cards are closed back.
 
-## Contributing
+You can restart the game at any time.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+Final star rating:
+- **4 stars**: 12 or less moves
+- **3 stars**: 18 or less moves
+- **2 stars**: 24 or less moves
+- **1 star**: get everybody
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Dependencies
+
+The project has some HTML, CSS styling and JS.
+
+This site was built using following libraries:
+- [Bootstrap 4.6.1](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css)
+- [Google Fonts](https://fonts.googleapis.com/css?family=Coda)
+
